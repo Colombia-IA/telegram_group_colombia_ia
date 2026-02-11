@@ -1,4 +1,5 @@
 name: Daily AI Post
+# Bot de Colombia-IA - Publica contenido diario de IA
 
 on:
   schedule:
