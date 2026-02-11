@@ -48,17 +48,17 @@ def generate_content(day: int) -> str:
     api_key = get_env_var("GEMINI_API_KEY")
     genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
-        system_instruction=SYSTEM_PROMPT,
-    )
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = PROMPTS[day]
     day_name = DAY_NAMES[day]
 
+    # Combinar system prompt con el prompt del día (igual que proyecto en producción)
+    full_prompt = f"{SYSTEM_PROMPT}\n\n---\n\n{prompt}"
+
     print(f"Generando contenido para {day_name}...")
 
-    response = model.generate_content(prompt)
+    response = model.generate_content(full_prompt)
 
     if not response.text:
         print("Error: Gemini no generó contenido")
