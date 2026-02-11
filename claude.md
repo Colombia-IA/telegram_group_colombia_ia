@@ -2,7 +2,7 @@
 
 ## Resumen del Proyecto
 
-Bot de Telegram que publica automáticamente 1 post diario sobre IA para la comunidad Colombia-IA. El contenido es generado por Gemini 1.5 Flash y publicado via GitHub Actions (gratis, sin servidor).
+Bot de Telegram que publica automáticamente 1 post diario sobre IA para la comunidad Colombia-IA. El contenido es generado por Gemini 2.0 Flash y publicado via GitHub Actions (gratis, sin servidor).
 
 ## Enlaces Importantes
 
@@ -13,7 +13,7 @@ Bot de Telegram que publica automáticamente 1 post diario sobre IA para la comu
 ## Stack Técnico
 
 - **Python 3.11+**
-- **Gemini 1.5 Flash** - Generación de contenido (free tier: 1500 req/día)
+- **Gemini 2.0 Flash** - Generación de contenido (free tier: 1500 req/día)
 - **Telegram Bot API** - Publicación via HTTP requests
 - **GitHub Actions** - Cron scheduler (gratis)
 
@@ -23,7 +23,7 @@ Bot de Telegram que publica automáticamente 1 post diario sobre IA para la comu
 telegram_group_colombia_ia/
 ├── bot.py                    # Script principal (~100 líneas)
 ├── prompts.py                # Prompts organizados por día de la semana
-├── requirements.txt          # google-generativeai, requests
+├── requirements.txt          # google-genai, requests
 ├── .env                      # Variables secretas (NO commitear)
 ├── .env.example              # Ejemplo de variables necesarias
 ├── .gitignore                # Excluye .env y __pycache__
@@ -62,10 +62,10 @@ TELEGRAM_CHANNEL_ID=    # @colombia_ia
    - Diferencia a la comunidad de cuentas de noticias genéricas
    - Si la comunidad pide noticias, se puede añadir grounding después
 
-2. **Gemini 1.5 Flash vs otras opciones**:
+2. **Gemini 2.0 Flash vs otras opciones**:
    - Gratis (1500 req/día, usamos 1)
    - Buen español
-   - API simple
+   - API simple (nueva librería google-genai)
 
 3. **requests vs python-telegram-bot**:
    - requests es más ligero

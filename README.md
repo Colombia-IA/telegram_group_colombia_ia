@@ -4,7 +4,7 @@ Bot que publica automáticamente contenido diario de IA en el canal de Telegram 
 
 ## Qué hace
 
-Todos los días a las 7:00 AM (hora Colombia), el bot genera y publica contenido de IA usando Gemini 1.5 Flash:
+Todos los días a las 7:00 AM (hora Colombia), el bot genera y publica contenido de IA usando Gemini 2.0 Flash:
 
 | Día | Contenido |
 |-----|-----------|
@@ -111,7 +111,7 @@ Ahora cada post del canal tendrá automáticamente una sección de comentarios.
 
 **$0** - Todo es gratis:
 - GitHub Actions: gratis para repos públicos
-- Gemini 1.5 Flash: gratis hasta 1500 requests/día (usamos 1)
+- Gemini 2.0 Flash: gratis hasta 1500 requests/día (usamos 1)
 - Telegram Bot API: gratis
 
 ## Contribuir
