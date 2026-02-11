@@ -45,7 +45,7 @@ def get_day_of_week(override: str = None) -> int:
 
 
 def generate_content(day: int) -> str:
-    """Genera contenido usando Gemini 2.0 Flash."""
+    """Genera contenido usando Gemini 1.5 Flash."""
     api_key = get_env_var("GEMINI_API_KEY")
 
     client = genai.Client(api_key=api_key)
@@ -56,7 +56,7 @@ def generate_content(day: int) -> str:
     print(f"Generando contenido para {day_name}...")
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-1.5-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT,
