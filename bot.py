@@ -10,8 +10,7 @@ import argparse
 from datetime import datetime
 import pytz
 import requests
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 
 from prompts import PROMPTS, SYSTEM_PROMPT, DAY_NAMES
 
@@ -47,21 +46,19 @@ def get_day_of_week(override: str = None) -> int:
 def generate_content(day: int) -> str:
     """Genera contenido usando Gemini 1.5 Flash."""
     api_key = get_env_var("GEMINI_API_KEY")
+    genai.configure(api_key=api_key)
 
-    client = genai.Client(api_key=api_key)
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        system_instruction=SYSTEM_PROMPT,
+    )
 
     prompt = PROMPTS[day]
     day_name = DAY_NAMES[day]
 
     print(f"Generando contenido para {day_name}...")
 
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-        ),
-    )
+    response = model.generate_content(prompt)
 
     if not response.text:
         print("Error: Gemini no generó contenido")
