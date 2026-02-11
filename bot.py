@@ -10,7 +10,11 @@ import argparse
 from datetime import datetime
 import pytz
 import requests
-import google.generativeai as genai
+from google import genai
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env (para ejecución local)
+load_dotenv()
 
 from prompts import PROMPTS, SYSTEM_PROMPT, DAY_NAMES
 
@@ -44,21 +48,23 @@ def get_day_of_week(override: str = None) -> int:
 
 
 def generate_content(day: int) -> str:
-    """Genera contenido usando Gemini 1.5 Flash."""
+    """Genera contenido usando Gemini 2.0 Flash."""
     api_key = get_env_var("GEMINI_API_KEY")
-    genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    client = genai.Client(api_key=api_key)
 
     prompt = PROMPTS[day]
     day_name = DAY_NAMES[day]
 
-    # Combinar system prompt con el prompt del día (igual que proyecto en producción)
+    # Combinar system prompt con el prompt del día
     full_prompt = f"{SYSTEM_PROMPT}\n\n---\n\n{prompt}"
 
     print(f"Generando contenido para {day_name}...")
 
-    response = model.generate_content(full_prompt)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=full_prompt,
+    )
 
     if not response.text:
         print("Error: Gemini no generó contenido")
@@ -156,7 +162,12 @@ def main():
     content = generate_content(day)
 
     print("\n--- Contenido generado ---")
-    print(content)
+    # Manejar emojis en consolas Windows
+    try:
+        print(content)
+    except UnicodeEncodeError:
+        print("[Contenido generado con emojis - no se puede mostrar en esta consola]")
+        print(f"Longitud: {len(content)} caracteres")
     print("--- Fin del contenido ---\n")
 
     if args.dry_run:
