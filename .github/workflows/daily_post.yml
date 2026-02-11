@@ -1,0 +1,42 @@
+name: Daily AI Post
+
+on:
+  schedule:
+    # 7:00 AM Colombia (UTC-5) = 12:00 UTC
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    # Permite ejecutar manualmente para testing
+    inputs:
+      day:
+        description: 'Día a simular (monday, tuesday, wednesday, thursday, friday, saturday, sunday)'
+        required: false
+        default: ''
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and post content
+        run: |
+          if [ -n "${{ github.event.inputs.day }}" ]; then
+            python bot.py --day "${{ github.event.inputs.day }}"
+          else
+            python bot.py
+          fi
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
