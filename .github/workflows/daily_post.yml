@@ -4,7 +4,7 @@ name: Daily AI Post
 on:
   schedule:
     # 7:00 AM Colombia (UTC-5) = 12:00 UTC
-    - cron: '0 12 * * *'
+    - cron: '0 01 * * *'
   workflow_dispatch:
     # Permite ejecutar manualmente para testing
     inputs:
