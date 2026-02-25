@@ -22,7 +22,7 @@ Bot de Telegram que publica automáticamente 1 post diario sobre IA para la comu
 ```
 telegram_group_colombia_ia/
 ├── bot.py                    # Script principal (~100 líneas)
-├── prompts.py                # Prompts organizados por día de la semana
+├── prompts.py                # Prompts por día + subtemas rotatorios por semana
 ├── requirements.txt          # google-genai, requests
 ├── .env                      # Variables secretas (NO commitear)
 ├── .env.example              # Ejemplo de variables necesarias
@@ -45,6 +45,18 @@ telegram_group_colombia_ia/
 | Viernes | IA en Latinoamérica | 🇨🇴 |
 | Sábado | Concepto de IA explicado simple | 🎓 |
 | Domingo | Pregunta para discusión (poll) | 🗳️ |
+
+## Sistema de Subtemas Rotatorios
+
+Para evitar contenido repetitivo, cada día tiene 8 subtemas que rotan según el número de semana del año. Esto garantiza variedad durante 8 semanas antes de repetir.
+
+Ejemplo para Martes (Herramientas):
+- Semana 1: herramientas de texto
+- Semana 2: herramientas de imagen
+- Semana 3: herramientas de audio
+- ...hasta semana 8, luego reinicia
+
+Los subtemas están definidos en `prompts.py` en el diccionario `SUBTOPICS`. Para modificarlos, edita ese diccionario.
 
 ## Variables de Entorno
 

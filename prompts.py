@@ -1,7 +1,108 @@
 """
 Prompts para generar contenido diario de Colombia-IA.
 Cada día tiene un tema diferente para mantener variedad.
+Los subtemas rotan por semana del año para evitar repetición.
 """
+
+# Subtemas rotatorios por día (8 opciones = ciclo de 8 semanas)
+SUBTOPICS = {
+    # Lunes: Tendencias
+    0: [
+        "Agentes de IA autónomos",
+        "RAG (Retrieval Augmented Generation)",
+        "Modelos multimodales (texto + imagen + audio)",
+        "IA generativa para código",
+        "Fine-tuning accesible para todos",
+        "IA en dispositivos edge/móviles",
+        "Modelos de lenguaje pequeños (SLMs)",
+        "IA para automatización de workflows",
+    ],
+    # Martes: Herramientas
+    1: [
+        "herramientas de IA para escribir y editar texto",
+        "herramientas de IA para generar y editar imágenes",
+        "herramientas de IA para audio y voz",
+        "herramientas de IA para video",
+        "herramientas de IA para programar",
+        "herramientas de IA para productividad personal",
+        "herramientas de IA para análisis de datos",
+        "herramientas de IA para automatización",
+    ],
+    # Miércoles: Tips de prompting
+    2: [
+        "la técnica Chain of Thought (pensar paso a paso)",
+        "la técnica Few-Shot (dar ejemplos)",
+        "la técnica de Role-Playing (asignar un rol)",
+        "cómo estructurar prompts largos",
+        "cómo obtener respuestas más precisas",
+        "cómo usar restricciones y formatos",
+        "cómo iterar y mejorar prompts",
+        "prompts para tareas específicas (resumir, traducir, analizar)",
+    ],
+    # Jueves: Datos/Estadísticas
+    3: [
+        "adopción de IA en empresas",
+        "impacto de IA en el mercado laboral",
+        "inversión global en IA",
+        "productividad con herramientas de IA",
+        "uso de IA generativa",
+        "IA en diferentes industrias",
+        "crecimiento de startups de IA",
+        "acceso a IA en Latinoamérica",
+    ],
+    # Viernes: IA en LATAM
+    4: [
+        "startups de IA en Colombia",
+        "startups de IA en México, Argentina o Brasil",
+        "universidades con programas de IA en LATAM",
+        "oportunidades de trabajo remoto en IA para LATAM",
+        "retos de implementar IA en la región",
+        "casos de éxito de IA en empresas latinoamericanas",
+        "comunidades de IA en español",
+        "gobierno y políticas de IA en LATAM",
+    ],
+    # Sábado: Conceptos
+    5: [
+        "LLM (Large Language Model)",
+        "Tokens y tokenización",
+        "Embeddings",
+        "Fine-tuning",
+        "RAG (Retrieval Augmented Generation)",
+        "Prompt Engineering",
+        "Temperatura y parámetros de generación",
+        "Alucinaciones en IA",
+    ],
+    # Domingo: Temas de debate
+    6: [
+        "el futuro del trabajo con IA",
+        "ética y sesgos en IA",
+        "herramientas de IA favoritas",
+        "cómo aprender sobre IA",
+        "IA reemplazando vs augmentando humanos",
+        "regulación de IA",
+        "IA en educación",
+        "privacidad y datos en IA",
+    ],
+}
+
+
+def get_subtopic(day: int, week_number: int) -> str:
+    """Retorna el subtema correspondiente al día y semana del año."""
+    subtopics = SUBTOPICS[day]
+    index = week_number % len(subtopics)
+    return subtopics[index]
+
+
+def get_prompt_with_subtopic(day: int, week_number: int) -> str:
+    """Retorna el prompt del día con el subtema de la semana incluido."""
+    base_prompt = PROMPTS[day]
+    subtopic = get_subtopic(day, week_number)
+
+    # Añadir instrucción específica del subtema al inicio del prompt
+    subtopic_instruction = f"TEMA ESPECÍFICO PARA ESTA SEMANA: {subtopic}\n\nDebes hablar específicamente sobre este tema, no elijas otro.\n\n"
+
+    return subtopic_instruction + base_prompt
+
 
 SYSTEM_PROMPT = """Eres el editor de Colombia-IA, una comunidad de inteligencia artificial en Colombia y Latinoamérica.
 

@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde .env (para ejecución local)
 load_dotenv()
 
-from prompts import PROMPTS, SYSTEM_PROMPT, DAY_NAMES
+from prompts import SYSTEM_PROMPT, DAY_NAMES, get_prompt_with_subtopic, get_subtopic
 
 # Configuración
 COLOMBIA_TZ = pytz.timezone("America/Bogota")
@@ -47,19 +47,27 @@ def get_day_of_week(override: str = None) -> int:
     return now.weekday()
 
 
-def generate_content(day: int) -> str:
+def get_week_number() -> int:
+    """Retorna el número de semana del año (1-52)."""
+    now = datetime.now(COLOMBIA_TZ)
+    return now.isocalendar()[1]
+
+
+def generate_content(day: int, week: int) -> str:
     """Genera contenido usando Gemini 2.0 Flash."""
     api_key = get_env_var("GEMINI_API_KEY")
 
     client = genai.Client(api_key=api_key)
 
-    prompt = PROMPTS[day]
+    prompt = get_prompt_with_subtopic(day, week)
     day_name = DAY_NAMES[day]
+    subtopic = get_subtopic(day, week)
 
     # Combinar system prompt con el prompt del día
     full_prompt = f"{SYSTEM_PROMPT}\n\n---\n\n{prompt}"
 
     print(f"Generando contenido para {day_name}...")
+    print(f"Subtema de la semana {week}: {subtopic}")
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
@@ -152,13 +160,14 @@ def main():
     )
     args = parser.parse_args()
 
-    # Determinar día
+    # Determinar día y semana
     day = get_day_of_week(args.day)
+    week = get_week_number()
     day_name = DAY_NAMES[day]
-    print(f"=== Colombia-IA Bot - {day_name} ===")
+    print(f"=== Colombia-IA Bot - {day_name} (Semana {week}) ===")
 
     # Generar contenido
-    content = generate_content(day)
+    content = generate_content(day, week)
 
     print("\n--- Contenido generado ---")
     # Manejar emojis en consolas Windows
