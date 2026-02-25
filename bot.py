@@ -83,7 +83,6 @@ def send_telegram_message(text: str) -> bool:
     payload = {
         "chat_id": channel_id,
         "text": text,
-        "parse_mode": "Markdown",
         "disable_web_page_preview": True,
     }
 
