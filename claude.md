@@ -29,7 +29,7 @@ telegram_group_colombia_ia/
 ├── .gitignore                # Excluye .env y __pycache__
 ├── .github/
 │   └── workflows/
-│       └── daily_post.yml    # Cron: 7:00 AM Colombia (12:00 UTC)
+│       └── daily_post.yml    # Cron: 9:00 AM Colombia (14:00 UTC)
 ├── README.md                 # Setup en 5 minutos
 └── claude.md                 # Este archivo
 ```
